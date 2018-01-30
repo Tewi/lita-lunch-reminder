@@ -5,7 +5,8 @@ module Lita
     class SpreadsheetWriter
       def initialize
         @session = GoogleDrive::Session.from_service_account_key(credentials_io)
-        @ws = @session.spreadsheet_by_key(ENV['GOOGLE_SP_KEY']).worksheets[0]
+        @spreadsheet = @session.spreadsheet_by_key(ENV['GOOGLE_SP_KEY'])
+        @ws = @spreadsheet.worksheets[0]
       end
 
       def credentials_io
@@ -22,6 +23,15 @@ module Lita
           client_x509_cert_url: ENV['GOOGLE_SP_CRED_CLIENT_X509_CERT_URL']
         }
         StringIO.new(credentials.to_json)
+      end
+
+      # current selected worksheet
+      def worksheet
+        @ws
+      end
+      
+      def spreadsheet
+        @spreadsheet
       end
 
       def write_new_row(array)

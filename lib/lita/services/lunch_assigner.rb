@@ -64,7 +64,10 @@ module Lita
 
       def persist_winning_lunchers
         sw = Lita::Services::SpreadsheetWriter.new
-        sw.write_new_row([Time.now.strftime("%Y-%m-%d")].concat(winning_lunchers_list))
+        time = Time.now.strftime("%Y-%m-%d")
+        winning_lunchers_list.each do |winner| 
+          sw.write_new_row([time, winner])
+        end
       end
 
       def winning_lunchers_list
