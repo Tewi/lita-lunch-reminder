@@ -66,7 +66,9 @@ module Lita
         sw = Lita::Services::SpreadsheetWriter.new
         time = Time.now.strftime("%Y-%m-%d")
         winning_lunchers_list.each do |winner| 
-          sw.write_new_row([time, winner])
+          user = User.find_by_mention_name(winner) || User.find_by_name(winner)
+          winner_id = user ? user.id : nil
+          sw.write_new_row([time, winner, winner_id])
         end
       end
 
